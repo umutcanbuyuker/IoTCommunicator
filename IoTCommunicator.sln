@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35013.160
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IoTCommunicator.Business", "IoTCommunicator.Business\IoTCommunicator.Business.csproj", "{9CE6B5DC-3B6F-4C4E-8CDE-7CAD7BE76234}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IoTCommunicator.Data", "IoTCommunicator.Data\IoTCommunicator.Data.csproj", "{CEDA316A-73B0-498A-9058-2D0F592993D0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IoTCommunicator.Common", "IoTCommunicator.Common\IoTCommunicator.Common.csproj", "{F91BB0D1-C6E6-4698-B5A8-15D9AE880A41}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IoTCommunicator.Presentation", "IoTCommunicator.Presentation\IoTCommunicator.Presentation.csproj", "{81B61566-35AE-46CD-A86A-B20177F3FA02}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9CE6B5DC-3B6F-4C4E-8CDE-7CAD7BE76234}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CE6B5DC-3B6F-4C4E-8CDE-7CAD7BE76234}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CE6B5DC-3B6F-4C4E-8CDE-7CAD7BE76234}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CE6B5DC-3B6F-4C4E-8CDE-7CAD7BE76234}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEDA316A-73B0-498A-9058-2D0F592993D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEDA316A-73B0-498A-9058-2D0F592993D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEDA316A-73B0-498A-9058-2D0F592993D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEDA316A-73B0-498A-9058-2D0F592993D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F91BB0D1-C6E6-4698-B5A8-15D9AE880A41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F91BB0D1-C6E6-4698-B5A8-15D9AE880A41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F91BB0D1-C6E6-4698-B5A8-15D9AE880A41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F91BB0D1-C6E6-4698-B5A8-15D9AE880A41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81B61566-35AE-46CD-A86A-B20177F3FA02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81B61566-35AE-46CD-A86A-B20177F3FA02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81B61566-35AE-46CD-A86A-B20177F3FA02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81B61566-35AE-46CD-A86A-B20177F3FA02}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2E81D95C-5DC5-484D-BD8E-0C8216673BA1}
+	EndGlobalSection
+EndGlobal
