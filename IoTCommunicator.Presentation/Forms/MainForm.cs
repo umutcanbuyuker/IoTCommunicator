@@ -10,7 +10,19 @@ namespace IoTCommunicator.Presentation.Forms
             _apiService = apiService;
             InitializeComponent();
         }
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            timerStatus.Start();
+            InitializePictureBoxes();
+        }
 
+        private void InitializePictureBoxes()
+        {
+            pictureBox_DoorOn.Visible = false;
+            pictureBox_DoorOff.Visible = false;
+            pictureBox_SwitchOn.Visible = false;
+            pictureBox_SwitchOff.Visible = false;
+        }
 
         private async void btnFetchAiData_Click(object sender, EventArgs e)
         {
@@ -24,15 +36,15 @@ namespace IoTCommunicator.Presentation.Forms
                     return;
                 }
 
-                listAiValues.Items.Clear();
+                listInputValues.Items.Clear();
                 for (int i = 0; i < values.Count; i++)
                 {
-                    listAiValues.Items.Add($"Ai{i}: {values[i].AiValueScaled}");
+                    listInputValues.Items.Add($"Ai{i}: {values[i].AiValueScaled}");
                 }
             }
             catch (Exception ex)
             {
-                listAiValues.Items.Clear();
+                listInputValues.Items.Clear();
                 MessageBox.Show($"Error: {ex.Message}", "Error");
             }
         }
@@ -49,50 +61,56 @@ namespace IoTCommunicator.Presentation.Forms
                     return;
                 }
 
-                listDiValues.Items.Clear();
+                listInputValues.Items.Clear();
                 for (int i = 0; i < values.Count; i++)
                 {
-                    listDiValues.Items.Add($"Di{i}: {values[i].DiStatus}");
+                    listInputValues.Items.Add($"Di{i}: {values[i].DiStatus}");
                 }
             }
             catch (Exception ex)
             {
-                listAiValues.Items.Clear();
+                listInputValues.Items.Clear();
                 MessageBox.Show($"Error: {ex.Message}", "Error");
             }
         }
 
-        private async void timerDoorStatus_Tick(object sender, EventArgs e)
+        private async void timerStatus_Tick(object sender, EventArgs e)
         {
             try
             {
-                var values = await _apiService.GetDiStatusAsync();
+                var diStatuses = await _apiService.GetDiStatusAsync();
 
-                if (values == null || !values.Any())
+                if (diStatuses == null || !diStatuses.Any())
                 {
-                    lbl_DoorStatus.Text = "No DI data received";
-                    panel_DoorStatus.BackColor = Color.Gray;
+                    lbl_DoorStatusText.Text = "No DI data received";
                     return;
                 }
 
-                var doorStatus = values.FirstOrDefault(d => d.DiStatus == 0)?.DiStatus ?? 0;
+                UpdateDoorStatus(diStatuses[0].DiStatus);
+                UpdateSwitchStatus(diStatuses[1].DiStatus);
 
-                if (doorStatus == 1)
-                {
-                    lbl_DoorStatus.Text = "Kapı Durumu: Açık";
-                    panel_DoorStatus.BackColor = Color.Green;
-                }
-                else
-                {
-                    lbl_DoorStatus.Text = "Kapı Durumu: Kapalı";
-                    panel_DoorStatus.BackColor = Color.Red;
-                }
             }
             catch (Exception ex)
             {
-                lbl_DoorStatus.Text = $"Error: {ex.Message}";
-                panel_DoorStatus.BackColor = Color.Gray;
+                lbl_DoorStatusText.Text = $"Error: {ex.Message}";
             }
+        }
+
+        private void UpdateDoorStatus(int doorStatus)
+        {
+            SetPictureBoxVisibility(pictureBox_DoorOn, pictureBox_DoorOff, doorStatus == 1);
+        }
+
+
+        private void UpdateSwitchStatus(int switchStatus)
+        {
+            SetPictureBoxVisibility(pictureBox_SwitchOn, pictureBox_SwitchOff, switchStatus == 1);
+        }
+
+        private void SetPictureBoxVisibility(PictureBox onPictureBox, PictureBox offPictureBox, bool isOn)
+        {
+            onPictureBox.Visible = isOn;
+            offPictureBox.Visible = !isOn;
         }
     }
 }
