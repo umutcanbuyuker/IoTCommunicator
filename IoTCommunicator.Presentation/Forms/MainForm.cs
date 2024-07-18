@@ -5,6 +5,7 @@ namespace IoTCommunicator.Presentation.Forms
     public partial class MainForm : Form
     {
         private readonly IApiService _apiService;
+        private bool _sideBarExpand;
         public MainForm(IApiService apiService)
         {
             _apiService = apiService;
@@ -15,20 +16,62 @@ namespace IoTCommunicator.Presentation.Forms
             timerStatus.Start();
             InitializePictureBoxes();
         }
-
+        private void menuButton_Click(object sender, EventArgs e)
+        {
+            sideBarTimer.Start();
+        }
+        private void sideBarTimer_Tick(object sender, EventArgs e)
+        {
+            if (_sideBarExpand)
+            {
+                sideBarContainer.Width -= 10;
+                if (sideBarContainer.Width == sideBarContainer.MinimumSize.Width)
+                {
+                    _sideBarExpand = false;
+                    sideBarTimer.Stop();
+                }
+            }
+            else
+            {
+                sideBarContainer.Width += 10;
+                if (sideBarContainer.Width == sideBarContainer.MaximumSize.Width)
+                {
+                    _sideBarExpand = true;
+                    sideBarTimer.Stop();
+                }
+            }
+        }
         private void InitializePictureBoxes()
         {
             pictureBox_DoorOn.Visible = false;
             pictureBox_DoorOff.Visible = false;
             pictureBox_SwitchOn.Visible = false;
             pictureBox_SwitchOff.Visible = false;
+            pictureBox_TakoLine.Visible = false;
+            pictureBox_TakoPeak.Visible = false;
         }
 
-        private async void btnFetchAiData_Click(object sender, EventArgs e)
+        private async void getAiData_Click(object sender, EventArgs e)
+        {
+            await FetchDataAsync(
+                async () => await _apiService.GetAiValueScaledAsync(),
+                (values) => listInputValues.Items.Add($"Ai{values.Index}: {values.Item.AiValueScaled}")
+            );
+        }
+
+        private async void getDiData_Click(object sender, EventArgs e)
+        {
+            await FetchDataAsync(
+                async () => await _apiService.GetDiStatusAsync(),
+                (values) => listInputValues.Items.Add($"Di{values.Index}: {values.Item.DiStatus}")
+            );
+        }
+
+        private async Task FetchDataAsync<T>(Func<Task<List<T>>> fetchDataFunc, Action<(int Index, T Item)> addItemAction)
         {
             try
             {
-                var values = await _apiService.GetAiValueScaledAsync();
+                var values = await fetchDataFunc();
 
                 if (values == null || !values.Any())
                 {
@@ -39,32 +82,7 @@ namespace IoTCommunicator.Presentation.Forms
                 listInputValues.Items.Clear();
                 for (int i = 0; i < values.Count; i++)
                 {
-                    listInputValues.Items.Add($"Ai{i}: {values[i].AiValueScaled}");
-                }
-            }
-            catch (Exception ex)
-            {
-                listInputValues.Items.Clear();
-                MessageBox.Show($"Error: {ex.Message}", "Error");
-            }
-        }
-
-        private async void getDiData_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                var values = await _apiService.GetDiStatusAsync();
-
-                if (values == null || !values.Any())
-                {
-                    MessageBox.Show("No DI data received", "Error");
-                    return;
-                }
-
-                listInputValues.Items.Clear();
-                for (int i = 0; i < values.Count; i++)
-                {
-                    listInputValues.Items.Add($"Di{i}: {values[i].DiStatus}");
+                    addItemAction((i, values[i]));
                 }
             }
             catch (Exception ex)
@@ -79,6 +97,7 @@ namespace IoTCommunicator.Presentation.Forms
             try
             {
                 var diStatuses = await _apiService.GetDiStatusAsync();
+                var aiValues = await _apiService.GetAiValueScaledAsync();
 
                 if (diStatuses == null || !diStatuses.Any())
                 {
@@ -88,12 +107,18 @@ namespace IoTCommunicator.Presentation.Forms
 
                 UpdateDoorStatus(diStatuses[0].DiStatus);
                 UpdateSwitchStatus(diStatuses[1].DiStatus);
-
+                UpdateTakoStatus(diStatuses[0].DiStatus);
+                UpdateTakoValue(aiValues[0].AiValueScaled);
             }
             catch (Exception ex)
             {
                 lbl_DoorStatusText.Text = $"Error: {ex.Message}";
             }
+        }
+
+        private void UpdateTakoStatus(int takoStatus)
+        {
+            SetPictureBoxVisibility(pictureBox_TakoPeak, pictureBox_TakoLine, takoStatus == 1);
         }
 
         private void UpdateDoorStatus(int doorStatus)
@@ -111,6 +136,11 @@ namespace IoTCommunicator.Presentation.Forms
         {
             onPictureBox.Visible = isOn;
             offPictureBox.Visible = !isOn;
+        }
+
+        private void UpdateTakoValue(double aiValueScaled)
+        {
+            textBox_TakoValue.Text = aiValueScaled.ToString();
         }
     }
 }
