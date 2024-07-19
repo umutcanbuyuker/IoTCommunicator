@@ -1,4 +1,5 @@
 ﻿using IoTCommunicator.Business.Interfaces;
+using IoTCommunicator.Presentation.CustomComponents;
 
 namespace IoTCommunicator.Presentation.Forms
 {
@@ -41,6 +42,12 @@ namespace IoTCommunicator.Presentation.Forms
                 }
             }
         }
+
+        private void ShowToast(string type, string message)
+        {
+            ToastForm toast = new ToastForm(type, message);
+            toast.Show();
+        }
         private void InitializePictureBoxes()
         {
             pictureBox_DoorOn.Visible = false;
@@ -61,8 +68,7 @@ namespace IoTCommunicator.Presentation.Forms
 
         private async void getDiData_Click(object sender, EventArgs e)
         {
-            await FetchDataAsync(
-                async () => await _apiService.GetDiStatusAsync(),
+            await FetchDataAsync(async () => await _apiService.GetDiStatusAsync(),
                 (values) => listInputValues.Items.Add($"Di{values.Index}: {values.Item.DiStatus}")
             );
         }
@@ -88,7 +94,7 @@ namespace IoTCommunicator.Presentation.Forms
             catch (Exception ex)
             {
                 listInputValues.Items.Clear();
-                MessageBox.Show($"Error: {ex.Message}", "Error");
+                ShowToast("ERROR",ex.Message);
             }
         }
 

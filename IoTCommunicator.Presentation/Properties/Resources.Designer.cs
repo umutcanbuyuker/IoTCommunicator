@@ -113,6 +113,16 @@ namespace IoTCommunicator.Presentation.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icon_alert_error {
+            get {
+                object obj = ResourceManager.GetObject("icon-alert-error", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_bounce_up_25 {
             get {
                 object obj = ResourceManager.GetObject("icons8-bounce-up-25", resourceCulture);

@@ -87,6 +87,7 @@
             // 
             // btn_getAiData
             // 
+            btn_getAiData.BackColor = Color.FromArgb(224, 224, 224);
             btn_getAiData.Font = new Font("Nirmala UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btn_getAiData.Location = new Point(28, 12);
             btn_getAiData.Margin = new Padding(3, 4, 3, 4);
@@ -94,18 +95,19 @@
             btn_getAiData.Size = new Size(103, 40);
             btn_getAiData.TabIndex = 0;
             btn_getAiData.Text = "Tako Veri Getir";
-            btn_getAiData.UseVisualStyleBackColor = true;
+            btn_getAiData.UseVisualStyleBackColor = false;
             btn_getAiData.Click += getAiData_Click;
             // 
             // btn_getDiData
             // 
+            btn_getDiData.BackColor = Color.FromArgb(224, 224, 224);
             btn_getDiData.Font = new Font("Nirmala UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btn_getDiData.Location = new Point(28, 59);
             btn_getDiData.Name = "btn_getDiData";
             btn_getDiData.Size = new Size(103, 41);
             btn_getDiData.TabIndex = 3;
             btn_getDiData.Text = "Switch Veri Getir";
-            btn_getDiData.UseVisualStyleBackColor = true;
+            btn_getDiData.UseVisualStyleBackColor = false;
             btn_getDiData.Click += getDiData_Click;
             // 
             // lbl_DoorStatusText
@@ -130,6 +132,7 @@
             // 
             // listInputValues
             // 
+            listInputValues.BackColor = Color.FromArgb(224, 224, 224);
             listInputValues.FormattingEnabled = true;
             listInputValues.Location = new Point(151, 13);
             listInputValues.Name = "listInputValues";
@@ -150,7 +153,7 @@
             // 
             // panel9
             // 
-            panel9.BackColor = Color.White;
+            panel9.BackColor = Color.FromArgb(224, 224, 224);
             panel9.Controls.Add(pictureBox_TakoLine);
             panel9.Controls.Add(pictureBox_TakoPeak);
             panel9.Controls.Add(label3);
@@ -190,7 +193,7 @@
             // 
             // panel8
             // 
-            panel8.BackColor = Color.White;
+            panel8.BackColor = Color.FromArgb(224, 224, 224);
             panel8.Controls.Add(textBox_TakoValue);
             panel8.Controls.Add(label2);
             panel8.Location = new Point(51, 110);
@@ -216,7 +219,7 @@
             // 
             // panel7
             // 
-            panel7.BackColor = Color.White;
+            panel7.BackColor = Color.FromArgb(224, 224, 224);
             panel7.Controls.Add(pictureBox_SwitchOn);
             panel7.Controls.Add(pictureBox_SwitchOff);
             panel7.Controls.Add(lbl_SwitchStatusText);
@@ -256,7 +259,7 @@
             // 
             // panel6
             // 
-            panel6.BackColor = Color.White;
+            panel6.BackColor = Color.FromArgb(224, 224, 224);
             panel6.Controls.Add(pictureBox_DoorOff);
             panel6.Controls.Add(pictureBox_DoorOn);
             panel6.Controls.Add(lbl_DoorStatusText);
