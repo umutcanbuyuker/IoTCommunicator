@@ -7,5 +7,6 @@ namespace IoTCommunicator.Business.Interfaces
     {
         Task<List<AiValueModel>> GetAiValueScaledAsync();
         Task<List<DiStatusModel>> GetDiStatusAsync();
+        bool PingDevice(string ipAddress);
     }
 }

@@ -7,16 +7,70 @@ namespace IoTCommunicator.Presentation.Forms
     {
         private readonly IApiService _apiService;
         private bool _sideBarExpand;
+
+        // Toast on-off control by time on 100ms timer methods
+        private string _lastErrorMessage;
+        private DateTime _lastErrorTime;
+        private TimeSpan _errorCooldown = TimeSpan.FromSeconds(10);
+        private bool _timerMethod;
         public MainForm(IApiService apiService)
         {
             _apiService = apiService;
             InitializeComponent();
         }
-        private void MainForm_Load(object sender, EventArgs e)
+        private async void MainForm_Load(object sender, EventArgs e)
         {
             timerStatus.Start();
             InitializePictureBoxes();
+
+            await CheckConnectionStatus("192.168.127.254");
         }
+        private void InitializePictureBoxes()
+        {
+            pictureBox_DoorOn.Visible = false;
+            pictureBox_DoorOff.Visible = false;
+            pictureBox_SwitchOn.Visible = false;
+            pictureBox_SwitchOff.Visible = false;
+            pictureBox_TakoLine.Visible = false;
+            pictureBox_TakoPeak.Visible = false;
+            pictureBox_ConnectionGreen.Visible = false;
+            pictureBox_ConnectionRed.Visible = false;
+        }
+
+        //Connection Operations
+        private async Task CheckConnectionStatus(string ipAddress)
+        {
+            bool isConnected = await Task.Run(() => _apiService.PingDevice(ipAddress));
+            UpdateConnectionStatus(isConnected);
+        }
+        private void UpdateConnectionStatus(bool isConnected)
+        {
+            if (isConnected)
+            {
+                pictureBox_ConnectionGreen.Visible = true;
+                pictureBox_ConnectionRed.Visible = false;
+            }
+            else
+            {
+                HideAllStatusIndicators();
+            }
+        }
+
+        private void HideAllStatusIndicators()
+        {
+            pictureBox_ConnectionRed.Visible = true;
+            pictureBox_DoorOn.Visible = false;
+            pictureBox_DoorOff.Visible = false;
+            pictureBox_SwitchOn.Visible = false;
+            pictureBox_SwitchOff.Visible = false;
+            pictureBox_TakoLine.Visible = false;
+            pictureBox_TakoPeak.Visible = false;
+            pictureBox_ConnectionGreen.Visible = false;
+            textBox_TakoValue.Text = "";
+            listInputValues.Items.Clear();
+        }
+
+        //SideBar Animations
         private void menuButton_Click(object sender, EventArgs e)
         {
             sideBarTimer.Start();
@@ -45,19 +99,49 @@ namespace IoTCommunicator.Presentation.Forms
 
         private void ShowToast(string type, string message)
         {
+            // 100ms sıklıkla istek yapılan durumda 10 saniye bekleme süresi ile toaster gösterir.
+            if (type == "ERROR" && message == _lastErrorMessage && (DateTime.Now - _lastErrorTime) < _errorCooldown)
+            {
+                return;
+            }
+
             ToastForm toast = new ToastForm(type, message);
             toast.Show();
-        }
-        private void InitializePictureBoxes()
-        {
-            pictureBox_DoorOn.Visible = false;
-            pictureBox_DoorOff.Visible = false;
-            pictureBox_SwitchOn.Visible = false;
-            pictureBox_SwitchOff.Visible = false;
-            pictureBox_TakoLine.Visible = false;
-            pictureBox_TakoPeak.Visible = false;
+
+            if (type == "ERROR")
+            {
+                _lastErrorMessage = message;
+                _lastErrorTime = DateTime.Now;
+            }
         }
 
+        private void UpdateTakoStatus(int takoStatus)
+        {
+            SetPictureBoxVisibility(pictureBox_TakoPeak, pictureBox_TakoLine, takoStatus == 1);
+        }
+
+        private void UpdateDoorStatus(int doorStatus)
+        {
+            SetPictureBoxVisibility(pictureBox_DoorOn, pictureBox_DoorOff, doorStatus == 1);
+        }
+
+
+        private void UpdateSwitchStatus(int switchStatus)
+        {
+            SetPictureBoxVisibility(pictureBox_SwitchOn, pictureBox_SwitchOff, switchStatus == 1);
+        }
+
+        private void SetPictureBoxVisibility(PictureBox onPictureBox, PictureBox offPictureBox, bool isOn)
+        {
+            onPictureBox.Visible = isOn;
+            offPictureBox.Visible = !isOn;
+        }
+
+        private void UpdateTakoValue(double aiValueScaled)
+        {
+            textBox_TakoValue.Text = aiValueScaled.ToString();
+        }
+        //Requests
         private async void getAiData_Click(object sender, EventArgs e)
         {
             await FetchDataAsync(
@@ -94,7 +178,8 @@ namespace IoTCommunicator.Presentation.Forms
             catch (Exception ex)
             {
                 listInputValues.Items.Clear();
-                ShowToast("ERROR",ex.Message);
+                ShowToast("ERROR", ex.Message);
+                await CheckConnectionStatus("192.168.127.254");
             }
         }
 
@@ -118,35 +203,30 @@ namespace IoTCommunicator.Presentation.Forms
             }
             catch (Exception ex)
             {
-                lbl_DoorStatusText.Text = $"Error: {ex.Message}";
+                ShowToast("ERROR", ex.Message);
+                await CheckConnectionStatus("192.168.127.254");
             }
         }
-
-        private void UpdateTakoStatus(int takoStatus)
+        private void button_Home_Click(object sender, EventArgs e)
         {
-            SetPictureBoxVisibility(pictureBox_TakoPeak, pictureBox_TakoLine, takoStatus == 1);
+            //loadform(new MainForm());
+        }
+        private void ayarlar_Click(object sender, EventArgs e)
+        {
+            loadform(new Ayarlar());
+        }
+        public void loadform(Form form)
+        {
+            if (panel_Main.Controls.Count > 0)
+                panel_Main.Controls.RemoveAt(0);
+
+            form.TopLevel = false;
+            form.Dock = DockStyle.Fill;
+            panel_Main.Controls.Add(form);
+            panel_Main.Tag = form;
+            form.Show();
         }
 
-        private void UpdateDoorStatus(int doorStatus)
-        {
-            SetPictureBoxVisibility(pictureBox_DoorOn, pictureBox_DoorOff, doorStatus == 1);
-        }
-
-
-        private void UpdateSwitchStatus(int switchStatus)
-        {
-            SetPictureBoxVisibility(pictureBox_SwitchOn, pictureBox_SwitchOff, switchStatus == 1);
-        }
-
-        private void SetPictureBoxVisibility(PictureBox onPictureBox, PictureBox offPictureBox, bool isOn)
-        {
-            onPictureBox.Visible = isOn;
-            offPictureBox.Visible = !isOn;
-        }
-
-        private void UpdateTakoValue(double aiValueScaled)
-        {
-            textBox_TakoValue.Text = aiValueScaled.ToString();
-        }
+        
     }
 }
