@@ -133,6 +133,26 @@ namespace IoTCommunicator.Presentation.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_connection_status_on_25 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-connection-status-on-25", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_connection_status_on_25__1_ {
+            get {
+                object obj = ResourceManager.GetObject("icons8-connection-status-on-25 (1)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_dashboard_24 {
             get {
                 object obj = ResourceManager.GetObject("icons8-dashboard-24", resourceCulture);

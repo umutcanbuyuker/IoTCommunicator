@@ -61,7 +61,12 @@
             button_Home = new Button();
             panel5 = new Panel();
             button2 = new Button();
+            panel10 = new Panel();
+            label4 = new Label();
+            pictureBox_ConnectionGreen = new PictureBox();
+            pictureBox_ConnectionRed = new PictureBox();
             sideBarTimer = new System.Windows.Forms.Timer(components);
+            panel_Main = new Panel();
             panel3.SuspendLayout();
             panel4.SuspendLayout();
             panel9.SuspendLayout();
@@ -79,6 +84,9 @@
             ((System.ComponentModel.ISupportInitialize)menuButton).BeginInit();
             panel1.SuspendLayout();
             panel5.SuspendLayout();
+            panel10.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox_ConnectionGreen).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox_ConnectionRed).BeginInit();
             SuspendLayout();
             // 
             // timerStatus
@@ -294,6 +302,7 @@
             sideBarContainer.Controls.Add(panel2);
             sideBarContainer.Controls.Add(panel1);
             sideBarContainer.Controls.Add(panel5);
+            sideBarContainer.Controls.Add(panel10);
             sideBarContainer.Dock = DockStyle.Left;
             sideBarContainer.Location = new Point(0, 0);
             sideBarContainer.MaximumSize = new Size(223, 622);
@@ -360,6 +369,7 @@
             button_Home.Text = "         Anasayfa";
             button_Home.TextAlign = ContentAlignment.MiddleLeft;
             button_Home.UseVisualStyleBackColor = false;
+            button_Home.Click += button_Home_Click;
             // 
             // panel5
             // 
@@ -388,11 +398,59 @@
             button2.Text = "         Ayarlar";
             button2.TextAlign = ContentAlignment.MiddleLeft;
             button2.UseVisualStyleBackColor = false;
+            button2.Click += ayarlar_Click;
+            // 
+            // panel10
+            // 
+            panel10.Controls.Add(label4);
+            panel10.Controls.Add(pictureBox_ConnectionGreen);
+            panel10.Controls.Add(pictureBox_ConnectionRed);
+            panel10.ForeColor = Color.White;
+            panel10.Location = new Point(3, 222);
+            panel10.Name = "panel10";
+            panel10.Size = new Size(220, 38);
+            panel10.TabIndex = 14;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(57, 7);
+            label4.Name = "label4";
+            label4.Size = new Size(64, 20);
+            label4.TabIndex = 14;
+            label4.Text = "Bağlantı";
+            // 
+            // pictureBox_ConnectionGreen
+            // 
+            pictureBox_ConnectionGreen.Image = Properties.Resources.icons8_connection_status_on_25;
+            pictureBox_ConnectionGreen.Location = new Point(14, 0);
+            pictureBox_ConnectionGreen.Name = "pictureBox_ConnectionGreen";
+            pictureBox_ConnectionGreen.Size = new Size(32, 32);
+            pictureBox_ConnectionGreen.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox_ConnectionGreen.TabIndex = 13;
+            pictureBox_ConnectionGreen.TabStop = false;
+            // 
+            // pictureBox_ConnectionRed
+            // 
+            pictureBox_ConnectionRed.Image = Properties.Resources.icons8_connection_status_on_25__1_;
+            pictureBox_ConnectionRed.Location = new Point(14, -3);
+            pictureBox_ConnectionRed.Name = "pictureBox_ConnectionRed";
+            pictureBox_ConnectionRed.Size = new Size(32, 32);
+            pictureBox_ConnectionRed.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox_ConnectionRed.TabIndex = 13;
+            pictureBox_ConnectionRed.TabStop = false;
             // 
             // sideBarTimer
             // 
             sideBarTimer.Interval = 10;
             sideBarTimer.Tick += sideBarTimer_Tick;
+            // 
+            // panel_Main
+            // 
+            panel_Main.Location = new Point(219, 0);
+            panel_Main.Name = "panel_Main";
+            panel_Main.Size = new Size(931, 622);
+            panel_Main.TabIndex = 13;
             // 
             // MainForm
             // 
@@ -403,6 +461,7 @@
             Controls.Add(sideBarContainer);
             Controls.Add(panel4);
             Controls.Add(panel3);
+            Controls.Add(panel_Main);
             Margin = new Padding(3, 4, 3, 4);
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
@@ -430,6 +489,10 @@
             ((System.ComponentModel.ISupportInitialize)menuButton).EndInit();
             panel1.ResumeLayout(false);
             panel5.ResumeLayout(false);
+            panel10.ResumeLayout(false);
+            panel10.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox_ConnectionGreen).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox_ConnectionRed).EndInit();
             ResumeLayout(false);
         }
 
@@ -467,5 +530,10 @@
         private Label label3;
         private PictureBox pictureBox_TakoPeak;
         private PictureBox pictureBox_TakoLine;
+        private Panel panel10;
+        private Label label4;
+        private PictureBox pictureBox_ConnectionGreen;
+        private PictureBox pictureBox_ConnectionRed;
+        private Panel panel_Main;
     }
 }
